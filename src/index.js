@@ -6,11 +6,9 @@ import SearchPanel from './components/search-panel'
 import TodoList from './components/todo-list'
 import ItemStatusFilter from './components/item-status-filter';
 
-const App = () => {
+import './index.css';
 
-    const isLoggedIn = true;
-    const loginBox = <span>Log in please</span>;
-    const welcomeBox = <span>Welcome Back</span>;
+const App = () => {
 
     const todoData =[
         { label: 'Drink Coffee', important: false, id: 1 },
@@ -19,12 +17,13 @@ const App = () => {
     ];
 
     return (
-        <div>
-            { isLoggedIn ? welcomeBox : loginBox }
+        <div className="todo-app">
             <AppHeader />
-            <SearchPanel />
-            <ItemStatusFilter />
-            <TodoList todos={todoData}/>
+            <div className="top-panel d-flex">
+                <SearchPanel />
+                <ItemStatusFilter />
+            </div>
+            <TodoList todos={todoData} />
         </div>
     );
 };
