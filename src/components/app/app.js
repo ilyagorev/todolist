@@ -15,11 +15,20 @@ export default class App extends Component {
 
     state = {
         todoData: [
-            { label: 'Drink Coffee', important: false, id: 1 },
-            { label: 'Make Awesome App', important: true, id: 2 },
-            { label: 'Have a lunch', important: false, id: 3 }
+            this.createItem('Drink Coffee'),
+            this.createItem('Learn React'),
+            this.createItem('Make Awesome App')
         ]
     };
+
+    createItem(label) {
+        return {
+            id: ++this.maxId,
+            label,
+            important: false,
+            done: false
+        };
+    }
 
     deleteItem = (id) => {
         this.setState(({ todoData })=>{
@@ -38,12 +47,7 @@ export default class App extends Component {
     };
 
     addItem = (text) => {
-        // generate id ?
-        const newItem = {
-            label: text,
-            important: false,
-            id: this.maxId++
-        };
+        const newItem = this.createItem(text);
 
         this.setState(({ todoData }) => {
             const newArr = [
