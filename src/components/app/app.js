@@ -61,37 +61,40 @@ export default class App extends Component {
         });
     };
 
+    toggleProperty = (arr, id, propName) => {
+        const idx = arr.findIndex((item) => item.id === id);
+
+        const oldItem = arr[idx];
+        const newItem = { ...oldItem,
+            [propName]: !oldItem[propName]};
+
+        return [
+            ...arr.slice(0, idx),
+            newItem,
+            ...arr.slice(idx + 1)
+        ];
+    };
 
     onToggleDone = (id) => {
         this.setState(({ todoData }) => {
-            const idx = todoData.findIndex((el) => el.id === id);
-
-            // 1. update object
-            const oldItem = todoData[idx];
-            const newItem = {...oldItem,
-                done: !oldItem.done};
-
-            // 2. construct new array
-            const newArray = [
-                ...todoData.slice(0, idx),
-                newItem,
-                ...todoData.slice(idx + 1)
-            ];
-
             return {
-                todoData: newArray
-            };
+                todoData: this.toggleProperty(todoData, id, 'done') };
         });
     };
 
     onToggleImportant = (id) => {
-        console.log("onToggleImportant", id);
+        this.setState(({ todoData }) => {
+            return {
+                todoData: this.toggleProperty(todoData, id, 'important') };
+        });
     };
+
 
     render () {
 
-        const doneCount = this.state.todoData.filter((el) => el.done).length;
-        const toDoCount = this.state.todoData.length - doneCount;
+        const { todoData } = this.state;
+        const doneCount = todoData.filter((el) => el.done).length;
+        const toDoCount = todoData.length - doneCount;
 
         return (
             <div className="todo-app">
@@ -103,7 +106,7 @@ export default class App extends Component {
                 </div>
 
                 <TodoList
-                    todos={this.state.todoData}
+                    todos={todoData}
                     onDeleted={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
                     onToggleDone={this.onToggleDone}/>
